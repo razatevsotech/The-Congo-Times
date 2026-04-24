@@ -8,7 +8,6 @@ import Health from "./Components/Pages/HealthSection";
 import Sports from "./Components/Pages/sports";
 import Politics from "./Components/Pages/Politics";
 import Buisness from "./Components/Pages/Buisness";
-import Art from "./Components/Pages/Art";
 import Science from "./Components/Pages/Science";
 import World from "./Components/Pages/World";
 import About from "./Components/Pages/About";
@@ -28,7 +27,6 @@ function App() {
           <Route path="sports" element={<Sports />} />
           <Route path="politics" element={<Politics />} />
           <Route path="business" element={<Buisness />} />
-          <Route path="art" element={<Art />} />
           <Route path="science" element={<Science />} />
           <Route path="world" element={<World />} />
           <Route path="about" element={<About />} />
