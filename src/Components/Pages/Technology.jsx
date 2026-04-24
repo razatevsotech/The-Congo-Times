@@ -1,6 +1,6 @@
 import React from "react";
 
-const sciencePosts = [
+const technologyPosts = [
   {
     id: 1,
     category: "SCIENCE",
@@ -39,7 +39,7 @@ const categories = [
   "World (4)",
 ];
 
-const Science = () => {
+const Technology = () => {
   return (
     <section className="min-h-screen bg-white px-4 py-7 sm:px-6 lg:px-0">
       <div className="mx-auto grid max-w-[980px] grid-cols-1 gap-10 md:grid-cols-[2.2fr_1fr]">
@@ -135,4 +135,4 @@ const Science = () => {
   );
 };
 
-export default Science;
+export default Technology;

@@ -1,14 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./MainLayout";
-
 import Home from "./Components/Pages/Home";
-
+import Africa from "./Components/Pages/sport";
+import Congo from "./Components/Pages/Congo";
+import Other from "./Components/Pages/Others";
 import Health from "./Components/Pages/HealthSection";
-import Sports from "./Components/Pages/sports";
+import sportsPosts from "./Components/Pages/sport";
 import Politics from "./Components/Pages/Politics";
 import Buisness from "./Components/Pages/Buisness";
-import Science from "./Components/Pages/Science";
+import Technology from "./Components/Pages/Technology";
 import World from "./Components/Pages/World";
 import About from "./Components/Pages/About";
 import ContactSection from "./Components/Pages/ContactSection";
@@ -24,10 +25,13 @@ function App() {
 
           {/* Other Pages */}
           <Route path="health" element={<Health />} />
-          <Route path="sports" element={<Sports />} />
+          <Route path="sports" element={<sportsPosts />} />
           <Route path="politics" element={<Politics />} />
           <Route path="business" element={<Buisness />} />
-          <Route path="science" element={<Science />} />
+          <Route path="africa" element={<Africa />} />
+          <Route path="congo-drc" element={<Congo />} />
+          <Route path="others" element={<Other />} />
+          <Route path="technology" element={<Technology />} />
           <Route path="world" element={<World />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<ContactSection />} />
