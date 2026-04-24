@@ -51,7 +51,7 @@ const Technology = () => {
           <div className="mb-5 border-t border-[#6d6d6d]"></div>
 
           <div className="grid grid-cols-1 gap-x-7 gap-y-10 sm:grid-cols-2">
-            {sciencePosts.map((post) => (
+            {technologyPosts.map((post) => (
               <div key={post.id} className="w-full">
                 <img
                   src={post.image}

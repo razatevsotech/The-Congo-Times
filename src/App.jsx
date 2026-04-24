@@ -6,7 +6,7 @@ import Africa from "./Components/Pages/sport";
 import Congo from "./Components/Pages/Congo";
 import Other from "./Components/Pages/Others";
 import Health from "./Components/Pages/HealthSection";
-import sportsPosts from "./Components/Pages/sport";
+import Sports from "./Components/Pages/sport";
 import Politics from "./Components/Pages/Politics";
 import Buisness from "./Components/Pages/Buisness";
 import Technology from "./Components/Pages/Technology";
@@ -25,7 +25,7 @@ function App() {
 
           {/* Other Pages */}
           <Route path="health" element={<Health />} />
-          <Route path="sports" element={<sportsPosts />} />
+          <Route path="sports" element={<Sports />} />
           <Route path="politics" element={<Politics />} />
           <Route path="business" element={<Buisness />} />
           <Route path="africa" element={<Africa />} />
