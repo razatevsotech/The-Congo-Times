@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./MainLayout";
 import Home from "./Components/Pages/Home";
 import Africa from "./Components/Pages/sport";
-import Business from "./Components/Pages/Congo";
+import Business from "./Components/Pages/Congodrc";
 import Other from "./Components/Pages/Others";
 import Health from "./Components/Pages/HealthSection";
 import Sports from "./Components/Pages/sport";
