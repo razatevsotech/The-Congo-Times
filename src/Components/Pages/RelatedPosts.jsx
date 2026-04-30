@@ -1,224 +1,197 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Footer from "../Footer";
 import Header from "../Header";
+import Footer from "../Footer";
+
+import businessImg from "../../assets/busines.jpg";
+import bannerImg from "../../assets/banner2.png";
 
 const relatedPosts = [
   {
     id: 1,
-    title: "Mauris sit amet faucibus nisl",
+    title: "The Mental Health Benefits Backed by Science",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80",
   },
   {
     id: 2,
-    title: "Suspendisse potenti sit amet",
+    title: "How Climate Change is Impacting Global Health",
     image:
-      "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=500&q=80",
   },
 ];
 
 export default function NewsDetails() {
   return (
-   <main className="min-h-screen bg-[#f4f4f4] py-6">
-    <Header showSlider={false}/>
-  <div className="mx-auto grid w-full max-w-[980px] grid-cols-1 gap-6 px-4 lg:grid-cols-[205px_430px_205px] lg:items-start lg:px-0">
-    {/* Left Ad */}
-    <aside className="hidden lg:block">
-      <div className="sticky top-6 h-[635px] bg-[#1c1c1c] px-5 py-8 text-white">
-        <p className="text-center text-[8px] font-bold uppercase tracking-[2px]">
-          Sections
-        </p>
+    <main className="min-h-screen bg-[#efefef]">
+      <Header showSlider={false} />
 
-        <h2 className="mt-6 text-center text-[28px] font-bold uppercase leading-[1.05] tracking-[3px]">
-          Business <br /> Banner
-        </h2>
-
-        <div className="mt-10 h-[300px] bg-gradient-to-b from-[#262626] to-[#3a3a3a]" />
-
-        <div className="mt-8 text-center">
-          <h3 className="text-[18px] font-bold uppercase leading-none">
-            Headline
-          </h3>
-          <p className="mt-1 text-[11px] uppercase tracking-[2px] text-white/80">
-            Text here
-          </p>
-          <p className="mt-4 text-[8px] leading-[1.5] text-white/60">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+      {/* TOP BANNER IMAGE */}
+      <div className="mx-auto mt-6 max-w-[1100px] px-4">
+        <div className="flex h-[120px] w-full items-center justify-center overflow-hidden bg-white px-4">
+          <img
+            src={bannerImg}
+            alt="Banner"
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
-    </aside>
 
-    {/* Center UI - unchanged */}
-    <div className="mx-auto w-full max-w-[430px] bg-white px-5 py-4">
-      <p className="text-[9px] font-bold uppercase tracking-wide text-[#e43d30]">
-        News
-      </p>
+      {/* MAIN GRID */}
+      <div className="mx-auto mt-6 grid max-w-[1100px] grid-cols-1 gap-6 px-4 lg:grid-cols-[180px_1fr_220px]">
+        {/* LEFT ADS */}
+        <aside className="hidden space-y-5 lg:block">
+          <div className="flex h-[360px] items-center justify-center bg-gradient-to-b from-purple-500 to-indigo-800 text-center font-bold text-white">
+            GRADIENT BANNER
+          </div>
 
-      <h1 className="mt-1 text-[20px] font-bold leading-[1.15] text-[#151515]">
-        Mauris in nibh sollicitudin felis suscipit bibendum
-      </h1>
+          <div className="flex h-[360px] items-center justify-center bg-gradient-to-b from-indigo-900 to-blue-700 text-center font-bold text-white">
+            GRADIENT BANNER
+          </div>
+        </aside>
 
-      <div className="mt-3 flex items-center gap-2 text-[9px] text-[#777]">
-        <span>By Admin</span>
-        <span>•</span>
-        <span>February 24, 2025</span>
-      </div>
+        {/* CENTER CONTENT */}
+        <section className="bg-white p-6 shadow-sm">
+          <h1 className="text-[24px] font-bold leading-tight text-[#111]">
+            Exploring the Connection Between Gut Health and Mental Well-being
+          </h1>
 
-      <img
-        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80"
-        alt="News"
-        className="mt-4 h-[185px] w-full object-cover"
+          <p className="mt-2 text-[11px] text-[#777]">
+            By kalpeshb | February 24, 2025
+          </p>
+
+          <img
+            src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80"
+            alt="Article"
+            className="mt-4 h-[260px] w-full object-cover"
+          />
+
+          <div className="mt-4 space-y-4 text-[12px] leading-[1.8] text-[#555]">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            <p>Donec id lorem a ex porta viverra eget nec massa...</p>
+
+            <blockquote className="border-l-4 border-red-500 pl-4 italic text-[#444]">
+              Excepteur sint occaecat cupidatat non proident...
+            </blockquote>
+
+            <p>Morbi nec imperdiet lectus...</p>
+          </div>
+
+          {/* MUST READ */}
+          <div className="mt-10 bg-[#f5f5f5] p-4">
+            <h3 className="mb-4 text-[16px] font-bold">Must Read</h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              {relatedPosts.map((post) => (
+                <Link key={post.id} to={`/news/${post.id}`}>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="h-[120px] w-full object-cover"
+                  />
+
+                  <h4 className="mt-2 text-[12px] font-bold">
+                    {post.title}
+                  </h4>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+{/* FOOD BANNER (LIKE SS) */}
+<div className="mx-auto mt-8 max-w-[1100px] px-4">
+  <div className="relative h-[130px] w-full overflow-hidden bg-[#8b001e]">
+    <img
+      src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
+      alt="Food Banner"
+      className="absolute right-0 top-0 h-full w-[50%] object-cover"
+    />
+
+    <div className="absolute inset-0 bg-gradient-to-r from-[#8b001e] via-[#b3002d] to-transparent"></div>
+
+    <div className="relative z-10 flex h-full flex-col justify-center px-6 text-white">
+      <h2 className="text-[20px] font-bold uppercase">
+        Headline Goes Here
+      </h2>
+      <p className="text-[10px] mt-1">Stay home, we deliver</p>
+    </div>
+  </div>
+
+  {/* dots */}
+  <div className="mt-2 flex justify-center gap-2">
+    <span className="h-2 w-2 rounded-full bg-black"></span>
+    <span className="h-2 w-2 rounded-full bg-gray-400"></span>
+    <span className="h-2 w-2 rounded-full bg-gray-400"></span>
+  </div>
+</div>
+
+{/* COMMENT SECTION (EXACT LIKE YOUR LAST SS) */}
+<div className="mx-auto mt-8 max-w-[1100px] px-4">
+  <div className="bg-[#f5f5f5] px-8 py-8">
+    <h2 className="text-[16px] font-semibold text-[#222]">
+      Leave a Comment
+    </h2>
+
+    <p className="mt-2 text-[11px] text-[#777]">
+      Your email address will not be published. Required fields are marked *
+    </p>
+
+    <textarea
+      placeholder="Type here.."
+      className="mt-4 h-[160px] w-full resize-none border border-[#ccc] bg-white px-4 py-3 text-[11px] outline-none"
+    />
+
+    <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <input
+        type="text"
+        placeholder="Name*"
+        className="h-[36px] border border-[#ccc] bg-white px-3 text-[11px] outline-none"
       />
-
-      <article className="mt-5 space-y-4 text-[11px] leading-[1.75] text-[#555]">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae
-          libero nec lectus facilisis consequat. Donec sed mauris sed lorem
-          gravida dignissim.
-        </p>
-
-        <p>
-          Aliquam erat volutpat. Praesent ac augue non lacus pretium feugiat.
-          Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas.
-        </p>
-
-        <h2 className="pt-2 text-[15px] font-bold text-[#151515]">
-          The standard chunk of Lorem Ipsum
-        </h2>
-
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium. Nemo enim ipsam voluptatem quia
-          voluptas sit aspernatur aut odit aut fugit.
-        </p>
-
-        <blockquote className="border-l-[3px] border-[#e43d30] pl-3 text-[12px] font-medium italic leading-[1.7] text-[#333]">
-          “Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          commodo ligula eget dolor.”
-        </blockquote>
-
-        <p>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident.
-        </p>
-      </article>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        {["Business", "News", "World"].map((tag) => (
-          <span
-            key={tag}
-            className="border border-[#ddd] px-2 py-1 text-[9px] uppercase text-[#777]"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <section className="mt-8">
-        <h3 className="border-b border-[#ddd] pb-2 text-[13px] font-bold text-[#111]">
-          Related Posts
-        </h3>
-
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {relatedPosts.map((post) => (
-            <Link key={post.id} to={`/news/${post.id}`}>
-              <div>
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="h-[78px] w-full object-cover"
-                />
-                <h4 className="mt-2 text-[10px] font-bold leading-tight text-[#222]">
-                  {post.title}
-                </h4>
-                <p className="mt-1 text-[8px] text-[#888]">
-                  February 24, 2025
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-8">
-        <h3 className="text-[13px] font-bold text-[#111]">Leave a Reply</h3>
-        <p className="mt-2 text-[10px] text-[#777]">
-          Your email address will not be published.
-        </p>
-
-        <form className="mt-4 space-y-3">
-          <textarea
-            placeholder="Comment"
-            className="h-[95px] w-full resize-none border border-[#ddd] px-3 py-2 text-[10px] outline-none"
-          />
-
-          <input
-            type="text"
-            placeholder="Name"
-            className="h-[34px] w-full border border-[#ddd] px-3 text-[10px] outline-none"
-          />
-
-          <input
-            type="email"
-            placeholder="Email"
-            className="h-[34px] w-full border border-[#ddd] px-3 text-[10px] outline-none"
-          />
-
-          <input
-            type="text"
-            placeholder="Website"
-            className="h-[34px] w-full border border-[#ddd] px-3 text-[10px] outline-none"
-          />
-
-          <button
-            type="button"
-            className="bg-[#e43d30] px-4 py-2 text-[10px] font-bold uppercase text-white"
-          >
-            Post Comment
-          </button>
-        </form>
-      </section>
+      <input
+        type="email"
+        placeholder="Email*"
+        className="h-[36px] border border-[#ccc] bg-white px-3 text-[11px] outline-none"
+      />
+      <input
+        type="text"
+        placeholder="Website"
+        className="h-[36px] border border-[#ccc] bg-white px-3 text-[11px] outline-none"
+      />
     </div>
 
-    {/* Right Ad */}
-    <aside className="hidden lg:block">
-      <div className="sticky top-6 h-[405px] overflow-hidden bg-[#16210f] px-4 py-5 text-white">
-        <div className="text-right">
-          <span className="rounded-full bg-[#a5d63f] px-2 py-1 text-[8px] font-bold text-black">
-            ✓
-          </span>
-        </div>
+    <label className="mt-3 flex items-center gap-2 text-[11px] text-[#555]">
+      <input type="checkbox" className="h-3 w-3" />
+      Save my name, email, and website in this browser for the next time I comment.
+    </label>
 
-        <p className="text-center text-[8px] uppercase tracking-wide text-white/70">
-          Business
-        </p>
-
-        <h3 className="mt-5 text-center text-[19px] font-bold leading-tight">
-          Transform <br /> your company
-        </h3>
-
-        <h2 className="mt-2 text-center text-[22px] font-bold leading-tight">
-          Business <br /> consultancy
-        </h2>
-
-        <div className="mx-auto mt-3 w-fit rounded-full border border-[#b4dc4b] px-3 py-1 text-[8px] text-[#b4dc4b]">
-          consultation
-        </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80"
-          alt="Business consultant"
-          className="mx-auto mt-6 h-[210px] w-[155px] object-cover grayscale"
-        />
-      </div>
-    </aside>
+    <button className="mt-4 bg-[#d63c2f] px-6 py-2 text-[11px] font-semibold text-white">
+      Post Comment
+    </button>
   </div>
-  <Footer/>
-</main>
+</div>
 
+          
+        </section>
+
+        {/* RIGHT ADS */}
+        <aside className="hidden space-y-5 lg:block">
+          <div className="relative flex h-[300px] items-center justify-center overflow-hidden text-center text-white">
+            <img
+              src={businessImg}
+              alt="Business Consultancy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
+
+          <div className="flex h-[300px] items-center justify-center bg-gradient-to-b from-blue-800 to-indigo-900 text-center text-white">
+            BUSINESS BANNER
+          </div>
+        </aside>
+      </div>
+
+      <Footer />
+    </main>
   );
 }
