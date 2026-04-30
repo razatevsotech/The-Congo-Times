@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import banner from "../../assets/banner.jpg";
+import banner from "../../assets/Banner.jpg";
 import techAd from "../../assets/add.jpg";
 import sideAd from "../../assets/Arrivals.png";
 import { Swiper, SwiperSlide } from 'swiper/react';
