@@ -6,7 +6,7 @@ import fb from "../assets/facebook-app-symbol.png";
 import linkedin from "../assets/linkedin.png";
 import pinterest from "../assets/pinterest.png";
 import logo from "../assets/logo.svg";
-import banner from "../assets/banner.jpg";
+import banner from "../assets/Banner.jpg";
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
