@@ -6,6 +6,14 @@ import fb from "../assets/facebook-app-symbol.png";
 import linkedin from "../assets/linkedin.png";
 import pinterest from "../assets/pinterest.png";
 import logo from "../assets/logo.svg";
+import banner from "../assets/banner.jpg";
+
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Autoplay } from "swiper/modules"; 
 
 const navLinks = [
   { name: "WORLD", path: "/world" },
@@ -20,8 +28,17 @@ const navLinks = [
   { name: "CONTACT", path: "/contact" },
 ];
 
-const Header = () => {
+
+
+const Header = ({ showSlider = true }) => {
   const [open, setOpen] = useState(false);
+
+    const banners = [
+    { src: banner, alt: "Cosmetic Advertisement 1" },
+    { src: banner, alt: "Cosmetic Advertisement 2" },
+    { src: banner, alt: "Cosmetic Advertisement 3" },
+  ];
+  
 
   const linkClass = ({ isActive }) =>
     `text-[13px] font-extrabold tracking-wide transition-colors ${
@@ -29,7 +46,8 @@ const Header = () => {
     }`;
 
   return (
-    <header className="w-full border-t border-b border-[#e3e3df] bg-[#f7f7f5]">
+    <>
+      <header className="w-full border-t border-b border-[#e3e3df] bg-[#f7f7f5]">
       
       {/* TOP HEADER */}
       <div className="relative mx-auto flex h-[90px] max-w-[1350px] items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -118,7 +136,38 @@ const Header = () => {
         </div>
       )}
     </header>
+
+
+{showSlider && (
+  <section className="pt-6 pb-5">
+        <div className="mx-auto max-w-[1100px] px-4">
+          <Swiper
+         modules={[Autoplay]}
+  autoplay={{
+    delay: 3000, // 3 seconds
+    disableOnInteraction: false, // keeps autoplay after user swipe
+  }}
+  loop={true}
+            className="relative h-[150px] w-full overflow-hidden md:h-[517px]"
+          >
+            {banners.map((ban, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={ban.src}
+                  alt={ban.alt}
+                  className="h-full w-full object-cover"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
+)}
+    
+    </>
+  
   );
 };
+
 
 export default Header;

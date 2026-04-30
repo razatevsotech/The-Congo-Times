@@ -5,6 +5,7 @@ import MissionSection from "../AboutComponents/MissionVisionSection";
 import ValuesSection from "../AboutComponents/ValuesSection";
 import ExperiencedJournalists from "../AboutComponents/journalists";
 import TestimonialSection from "../AboutComponents/TestimonialSection";
+import AboutSlider from "../AboutComponents/aboutSlider";
 
 const About = () => {
   return (
@@ -15,6 +16,7 @@ const About = () => {
       <ValuesSection />
       <ExperiencedJournalists />
       <TestimonialSection />
+      <AboutSlider />
     </main>
   );
 };

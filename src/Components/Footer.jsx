@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
@@ -17,12 +17,27 @@ const footerLinks = [
 ];
 
 const Footer = () => {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   const icons = {
     instagram: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png",
     facebook: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
     linkedin: "https://cdn-icons-png.flaticon.com/512/3536/3536505.png",
     pinterest: "https://cdn-icons-png.flaticon.com/512/733/733558.png",
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 0);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <footer className="relative border-t-[4px] border-t-[#e34b2f] bg-black text-white">
@@ -95,7 +110,9 @@ const Footer = () => {
       {/* SCROLL TOP */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-5 right-5 flex h-8 w-8 items-center justify-center bg-[#e34b2f]"
+        className={`fixed bottom-5 right-5 flex h-8 w-8 items-center justify-center bg-[#e34b2f] transition-opacity duration-300 ${
+          showScrollTop ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <ChevronUp size={18} />
       </button>
