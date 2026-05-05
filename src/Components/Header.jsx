@@ -6,7 +6,7 @@ import fb from "../assets/facebook-app-symbol.png";
 import linkedin from "../assets/linkedin.png";
 import pinterest from "../assets/pinterest.png";
 import logo from "../assets/headerLogo.png";
-import HeaderBg from "../assets/frame.png";
+import HeaderBg from "../assets/Frame.png";
 import banner from "../assets/banner.png";
 import star from "../assets/Star.png";
 
