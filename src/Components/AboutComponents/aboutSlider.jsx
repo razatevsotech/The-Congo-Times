@@ -19,12 +19,12 @@ export default function AboutSlider() {
   return (
     
 
-<section className="pt-6 pb-5">
-        <div className="mx-auto max-w-[1100px] px-4">
+<section className="pb-5">
+        <div className="w-full">
           <Swiper
             modules={[Pagination]}
             pagination={{ clickable: true }}
-            className="relative h-[150px] w-full overflow-hidden md:h-[517px]"
+            className="relative h-[250px] w-full overflow-hidden md:h-[517px]"
           >
             {banners.map((ban, index) => (
               <SwiperSlide key={index}>
