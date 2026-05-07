@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logoText from "../assets/logo.svg";
 import flag from "../assets/flag.png";
-
 import stripes from "../assets/headerLogo.png";
+import { useCategories } from "../hooks/usePosts";
 
 // Custom SVG for DRC Flag
 const DRCFlag = () => (
@@ -11,6 +11,23 @@ const DRCFlag = () => (
 );
 
 const Footer2 = () => {
+    // Fetch categories for dynamic links
+  const { data: categoriesData } = useCategories();
+
+  // Map dynamic categories to nav links, followed by static pages
+  const dynamicNavLinks = categoriesData ? categoriesData.map(cat => ({
+    name: cat.name.toUpperCase(),
+    path: `/${cat.slug}`
+  })) : [];
+
+  const staticNavLinks = [
+    { name: "ABOUT", path: "/about" },
+    { name: "CONTACT", path: "/contact" },
+  ];
+
+  // Combine dynamic and static links
+  const navLinks = [...dynamicNavLinks, ...staticNavLinks];
+
   return (
     <footer className="w-full bg-black text-white font-sans">
       {/* Top Stripes */}
@@ -47,10 +64,10 @@ const Footer2 = () => {
           <div className="space-y-6 lg:pl-12">
             <h3 className="text-xl font-bold tracking-wider">IMPORTANT LINKS</h3>
             <ul className="space-y-2 text-[15px] font-bold opacity-90 italic">
-              {["ABOUT US", "LEGAL", "CONFIDENTIAL", "WORLD", "AFRICA", "CONGO", "POLITICS", "ECONOMY", "HEALTH", "SPORTS", "DIGITAL"].map((link) => (
-                <li key={link}>
-                  <Link to={`/${link.toLowerCase().replace(" ", "-")}`} className="hover:text-yellow-400 transition-colors">
-                    {link}
+              {navLinks.map(link => (
+                <li key={link.path}>
+                  <Link to={link.path} className="hover:text-yellow-400 transition-colors">
+                    {link.name}
                   </Link>
                 </li>
               ))}
