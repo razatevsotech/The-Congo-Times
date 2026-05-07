@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { usePostsByCategory } from '../../hooks/usePosts';
+import { usePostsByCategory, useCategories } from '../../hooks/usePosts';
 
 const PLACEHOLDER_IMAGE =
   'https://images.unsplash.com/photo-1494390248081-4e521a5940db?auto=format&fit=crop&w=800&q=80';
@@ -43,6 +43,9 @@ export const CategoryPage = ({ category, categoryTitle, categoryLabel }) => {
 
   // Fetch posts for the category
   const { data: postsResponse, loading, error } = usePostsByCategory(category, page, postsPerPage);
+
+  // Fetch all categories for the sidebar
+  const { data: categoriesData, loading: categoriesLoading } = useCategories();
 
   const posts = Array.isArray(postsResponse?.data) ? postsResponse.data : [];
   const meta = postsResponse?.meta || null;
@@ -175,25 +178,29 @@ export const CategoryPage = ({ category, categoryTitle, categoryLabel }) => {
               </ul>
             </div>
 
-            {/* Categories */}
             <div>
               <h3 className="text-[22px] font-black text-black text-center mb-8 uppercase tracking-tight">Categories</h3>
               <ul className="space-y-4">
-                {[
-                  { name: 'Art', count: 4 },
-                  { name: 'Business', count: 2 },
-                  { name: 'Health', count: 5 },
-                  { name: 'Politics', count: 2 },
-                  { name: 'Science', count: 2 },
-                  { name: 'Sports', count: 2 },
-                  { name: 'World', count: 2 }
-                ].map((cat) => (
-                  <li key={cat.name}>
-                    <Link to={`/${cat.name.toLowerCase()}`} className="flex justify-between items-center text-[15px] text-gray-600 hover:text-black transition-colors py-1">
-                      <span>{cat.name} ({cat.count})</span>
-                    </Link>
-                  </li>
-                ))}
+                {categoriesLoading ? (
+                  Array(5).fill(0).map((_, i) => (
+                    <li key={i} className="h-6 bg-gray-100 animate-pulse rounded-sm"></li>
+                  ))
+                ) : categoriesData && categoriesData.length > 0 ? (
+                  categoriesData.map((cat) => (
+                    <li key={cat.id}>
+                      <Link 
+                        to={`/${cat.slug}`} 
+                        className={`flex justify-between items-center text-[15px] transition-colors py-1 ${
+                          category === cat.slug ? 'text-[#0085CA] font-black' : 'text-gray-600 hover:text-black'
+                        }`}
+                      >
+                        <span>{cat.name}</span>
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-400 text-sm text-center">No categories found</p>
+                )}
               </ul>
             </div>
           </aside>

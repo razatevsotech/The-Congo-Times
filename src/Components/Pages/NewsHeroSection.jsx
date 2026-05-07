@@ -13,16 +13,16 @@ import { AD_PLACEMENTS } from '../../utils/categoryUtils';
 
 
 export default function NewsHeroSection() {
-  const { data: techAds, loading: techAdsLoading } = useAdvertisementsByPlacement(
-    AD_PLACEMENTS.TECH_AD
+  const { data: homePageAds1, loading: homePageAds1Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.HOME_PAGE_ADS_1
   );
 
-  const { data: heroAds, loading: heroAdsLoading } = useAdvertisementsByPlacement(
-    AD_PLACEMENTS.AFTER_HERO
+  const { data: homePageAds2, loading: homePageAds2Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.HOME_PAGE_ADS_2
   );
 
-  console.log('[NewsHeroSection] techAds from API (position_5):', techAds);
-  console.log('[NewsHeroSection] heroAds from API (position_3):', heroAds);
+  console.log('[NewsHeroSection] homePageAds1 from API (position_2):', homePageAds1);
+  console.log('[NewsHeroSection] homePageAds2 from API (position_3):', homePageAds2);
 
   const healthArticles = [
     {
@@ -112,23 +112,6 @@ export default function NewsHeroSection() {
         'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80',
     },
   ];
-
-  // Fallback local banners (used if API heroAds is empty)
-  const fallbackBanners = [
-    { src: banner, alt: 'Cosmetic Advertisement 1' },
-    { src: banner, alt: 'Cosmetic Advertisement 2' },
-    { src: banner, alt: 'Cosmetic Advertisement 3' },
-  ];
-
-  // Fallback local tech ads (used if API techAds is empty)
-  const fallbackTechAds = [
-    { src: techAd, alt: 'Technology Advertisement 1' },
-    { src: techAd, alt: 'Technology Advertisement 2' },
-  ];
-
-  // Prefer API data; fall back to local assets
-  const resolvedTechAds = Array.isArray(techAds) && techAds.length > 0 ? techAds : fallbackTechAds;
-  const resolvedHeroBanners = Array.isArray(heroAds) && heroAds.length > 0 ? heroAds : fallbackBanners;
 
   const [currentBottomAd, setCurrentBottomAd] = useState(0);
 
@@ -256,38 +239,106 @@ export default function NewsHeroSection() {
         </div>
       </section>
 
-      {/* TECHNOLOGY AD */}
-      <section className="py-12 bg-[#F5F3EF] ">
-        <div className="mx-auto">
-          <div className="max-w-[1100px] px-4 mx-auto">
-            <div className="flex items-center gap-5 mb-8">
-              <h2 className="text-[24px] font-black text-black tracking-tight">Advertisement</h2>
-              <div className="flex-1 h-[1.5px] bg-black"></div>
+      {/* HOME PAGE ADS 1 (Position 2) */}
+      {(() => {
+        const now = new Date();
+        const activeAds = (homePageAds1?.items || [])
+          .filter(ad => {
+            if (!ad.starts_at && !ad.ends_at) return true;
+            const start = ad.starts_at ? new Date(ad.starts_at) : null;
+            const end = ad.ends_at ? new Date(ad.ends_at) : null;
+            return (!start || now >= start) && (!end || now <= end);
+          })
+          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+
+        if (homePageAds1Loading || activeAds.length === 0) return null;
+
+        const isSlider = activeAds.length > 1;
+
+        return (
+          <section className="py-12 bg-[#F5F3EF] ">
+            <div className="mx-auto">
+              <div className="max-w-[1100px] px-4 mx-auto">
+                <div className="flex items-center gap-5 mb-8">
+                  <h2 className="text-[24px] font-black text-black tracking-tight">Advertisement</h2>
+                  <div className="flex-1 h-[1.5px] bg-black"></div>
+                </div>
+              </div>
+
+              <Swiper
+                modules={[Autoplay]}
+                autoplay={isSlider ? {
+                  delay: 3000,
+                  disableOnInteraction: false,
+                } : false}
+                loop={isSlider}
+                className="w-full shadow-sm"
+              >
+                {activeAds.map((ad, index) => {
+                  const hasButton = !!ad.button_text;
+                  const adContent = (
+                    <div className="relative h-full w-full group overflow-hidden">
+                      <img
+                        src={ad.image}
+                        alt={ad.title || "Advertisement"}
+                        className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      {/* Text Overlay */}
+                      {(ad.heading || ad.subheading || ad.button_text) && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 md:p-8 text-left">
+                          {ad.heading && (
+                            <h3 className="text-white text-lg md:text-2xl font-black mb-1 leading-tight">
+                              {ad.heading}
+                            </h3>
+                          )}
+                          {ad.subheading && (
+                            <p className="text-white/90 text-xs md:text-sm max-w-[80%] mb-3 line-clamp-1">
+                              {ad.subheading}
+                            </p>
+                          )}
+                          {ad.button_text && (
+                            <a
+                              href={ad.link_url}
+                              target={ad.open_in_new_tab ? "_blank" : "_self"}
+                              rel="noopener noreferrer"
+                              className="inline-block w-fit bg-[#f7d117] px-6 py-2 text-xs md:text-sm font-black text-black hover:bg-yellow-400 transition-all uppercase"
+                            >
+                              {ad.button_text}
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+
+                  return (
+                    <SwiperSlide 
+                      key={ad.id || index}
+                      data-swiper-autoplay={(ad.transition_duration || 3) * 1000}
+                    >
+                      {!hasButton && ad.link_url ? (
+                        <a
+                          href={ad.link_url}
+                          target={ad.open_in_new_tab ? "_blank" : "_self"}
+                          rel="noopener noreferrer"
+                          className="block h-full w-full cursor-pointer"
+                        >
+                          {adContent}
+                        </a>
+                      ) : (
+                        <div className="h-full w-full">
+                          {adContent}
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
-          </div>
-
-
-          <Swiper
-            modules={[Autoplay]}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-            className="w-full shadow-sm"
-          >
-            {resolvedTechAds.map((ad, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={ad.image || ad.src}
-                  alt={ad.title || ad.alt}
-                  className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover rounded-md"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       {/* TOP STORIES */}
       <section className="py-6">
@@ -457,38 +508,106 @@ export default function NewsHeroSection() {
         </div>
       </section>
 
-      {/* TECHNOLOGY AD */}
-      <section className="py-12 bg-[#F5F3EF] ">
-        <div className="mx-auto">
-          <div className="max-w-[1100px] px-4 mx-auto">
-            <div className="flex items-center gap-5 mb-8">
-              <h2 className="text-[24px] font-black text-black tracking-tight">Advertisement</h2>
-              <div className="flex-1 h-[1.5px] bg-black"></div>
+      {/* HOME PAGE ADS 2 (Position 3) */}
+      {(() => {
+        const now = new Date();
+        const activeAds = (homePageAds2?.items || [])
+          .filter(ad => {
+            if (!ad.starts_at && !ad.ends_at) return true;
+            const start = ad.starts_at ? new Date(ad.starts_at) : null;
+            const end = ad.ends_at ? new Date(ad.ends_at) : null;
+            return (!start || now >= start) && (!end || now <= end);
+          })
+          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+
+        if (homePageAds2Loading || activeAds.length === 0) return null;
+
+        const isSlider = activeAds.length > 1;
+
+        return (
+          <section className="py-12 bg-[#F5F3EF] ">
+            <div className="mx-auto">
+              <div className="max-w-[1100px] px-4 mx-auto">
+                <div className="flex items-center gap-5 mb-8">
+                  <h2 className="text-[24px] font-black text-black tracking-tight">Advertisement</h2>
+                  <div className="flex-1 h-[1.5px] bg-black"></div>
+                </div>
+              </div>
+
+              <Swiper
+                modules={[Autoplay]}
+                autoplay={isSlider ? {
+                  delay: 3000,
+                  disableOnInteraction: false,
+                } : false}
+                loop={isSlider}
+                className="w-full shadow-sm"
+              >
+                {activeAds.map((ad, index) => {
+                  const hasButton = !!ad.button_text;
+                  const adContent = (
+                    <div className="relative h-full w-full group overflow-hidden">
+                      <img
+                        src={ad.image}
+                        alt={ad.title || "Advertisement"}
+                        className="h-full w-full object-cover h-[200px] sm:h-[240px] md:h-[280px] transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      {/* Text Overlay */}
+                      {(ad.heading || ad.subheading || ad.button_text) && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 md:p-8 text-left">
+                          {ad.heading && (
+                            <h3 className="text-white text-lg md:text-2xl font-black mb-1 leading-tight">
+                              {ad.heading}
+                            </h3>
+                          )}
+                          {ad.subheading && (
+                            <p className="text-white/90 text-xs md:text-sm max-w-[80%] mb-3 line-clamp-1">
+                              {ad.subheading}
+                            </p>
+                          )}
+                          {ad.button_text && (
+                            <a
+                              href={ad.link_url}
+                              target={ad.open_in_new_tab ? "_blank" : "_self"}
+                              rel="noopener noreferrer"
+                              className="inline-block w-fit bg-[#f7d117] px-6 py-2 text-xs md:text-sm font-black text-black hover:bg-yellow-400 transition-all uppercase"
+                            >
+                              {ad.button_text}
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+
+                  return (
+                    <SwiperSlide 
+                      key={ad.id || index}
+                      data-swiper-autoplay={(ad.transition_duration || 3) * 1000}
+                    >
+                      {!hasButton && ad.link_url ? (
+                        <a
+                          href={ad.link_url}
+                          target={ad.open_in_new_tab ? "_blank" : "_self"}
+                          rel="noopener noreferrer"
+                          className="block h-full w-full cursor-pointer"
+                        >
+                          {adContent}
+                        </a>
+                      ) : (
+                        <div className="h-full w-full">
+                          {adContent}
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
-          </div>
-
-
-          <Swiper
-            modules={[Autoplay]}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-            className="w-full shadow-sm"
-          >
-            {resolvedTechAds.map((ad, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={ad.image || ad.src}
-                  alt={ad.title || ad.alt}
-                  className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover rounded-md"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
       {/* ARTS */}
       <section className="pb-12">
         <div className="mx-auto max-w-[1100px] px-4">

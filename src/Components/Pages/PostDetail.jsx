@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 import { useAdvertisementsByPlacement } from '../../hooks/useAdvertisements';
 import { usePostBySlug, usePostsByCategory } from '../../hooks/usePosts';
 import { AD_PLACEMENTS } from '../../utils/categoryUtils';
 import Header from '../Header';
 import Footer from '../Footer';
-import BannerDetail from '../../assets/detail-hero.png'
-import ads from '../../assets/burger.png'
 
 
 const PLACEHOLDER_IMAGE =
@@ -51,11 +52,130 @@ const PostSkeleton = () => (
   </div>
 );
 
+/**
+ * Advertisement slider component with industry-standard features
+ */
+const AdSlider = ({ data, loading, className, height }) => {
+  const items = useMemo(() => {
+    if (!data?.items?.length) return [];
+    
+    const now = new Date();
+    return data.items
+      .filter(ad => {
+        // Date filtering logic
+        if (!ad.starts_at && !ad.ends_at) return true;
+        const start = ad.starts_at ? new Date(ad.starts_at) : null;
+        const end = ad.ends_at ? new Date(ad.ends_at) : null;
+        return (!start || now >= start) && (!end || now <= end);
+      })
+      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+  }, [data]);
+
+  if (loading || !items.length) return null;
+
+  const isSlider = items.length > 1;
+
+  return (
+    <div className={`overflow-hidden border border-gray-100 ${className}`}>
+      <Swiper
+        modules={[Autoplay]}
+        autoplay={isSlider ? {
+          delay: 3000, // Default baseline, overridden by per-slide duration
+          disableOnInteraction: false,
+        } : false}
+        loop={isSlider}
+        className="w-full"
+      >
+        {items.map((ad, index) => {
+          const hasButton = !!ad.button_text;
+          const adContent = (
+            <div className="relative h-full w-full group">
+              <img 
+                src={ad.image} 
+                alt={ad.title || "Ad"} 
+                className={`w-full object-cover ${height} transition-transform duration-700 group-hover:scale-105`} 
+              />
+              
+              {/* Text Overlay */}
+              {(ad.heading || ad.subheading || ad.button_text) && (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 md:p-8 text-left">
+                  {ad.heading && (
+                    <h3 className="text-white text-lg md:text-2xl font-black mb-2 leading-tight">
+                      {ad.heading}
+                    </h3>
+                  )}
+                  {ad.subheading && (
+                    <p className="text-white/90 text-xs md:text-sm max-w-[80%] mb-4 line-clamp-2">
+                      {ad.subheading}
+                    </p>
+                  )}
+                  {ad.button_text && (
+                    <a
+                      href={ad.link_url}
+                      target={ad.open_in_new_tab ? "_blank" : "_self"}
+                      rel="noopener noreferrer"
+                      className="inline-block w-fit bg-[#f7d117] px-6 py-2 text-xs md:text-sm font-black text-black hover:bg-yellow-400 transition-all uppercase"
+                    >
+                      {ad.button_text}
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+
+          return (
+            <SwiperSlide 
+              key={ad.id || index} 
+              data-swiper-autoplay={(ad.transition_duration || 3) * 1000}
+            >
+              {!hasButton && ad.link_url ? (
+                <a 
+                  href={ad.link_url} 
+                  target={ad.open_in_new_tab ? "_blank" : "_self"} 
+                  rel="noopener noreferrer"
+                  className="block h-full w-full cursor-pointer"
+                >
+                  {adContent}
+                </a>
+              ) : (
+                <div className="h-full w-full">
+                  {adContent}
+                </div>
+              )}
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+    </div>
+  );
+};
+
 export default function PostDetail() {
   const { id: slug } = useParams();
 
   // Fetch the post by slug
   const { data: post, loading, error } = usePostBySlug(slug);
+
+
+  const { data: ad1, loading: ad1Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_1
+  );
+  const { data: ad2, loading: ad2Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_2
+  );
+  const { data: ad3, loading: ad3Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_3
+  );
+  const { data: ad4, loading: ad4Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_4
+  );
+  const { data: ad5, loading: ad5Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_5
+  );
+  const { data: ad6, loading: ad6Loading } = useAdvertisementsByPlacement(
+    AD_PLACEMENTS.AD_6
+  );
 
   // Fetch related posts for navigation and Must Read section
   const { data: relatedPostsResponse } = usePostsByCategory(post?.category?.slug || '', 1, 5);
@@ -90,11 +210,7 @@ export default function PostDetail() {
     <>
       <Header showSlider={false} />
       <main className="min-h-screen bg-gray-50 pt-10 pb-20">
-        <img
-          src={BannerDetail}
-          alt="banner detail"
-          className="h-full w-full mb-[50px] "
-        />
+        <AdSlider data={ad1} loading={ad1Loading} className="mb-[50px]" height="h-[400px]" />
 
         {/* SECTION 1: ARTICLE + SIDEBARS */}
         <div className="mx-auto max-w-[1440px] px-6 mb-12">
@@ -102,12 +218,8 @@ export default function PostDetail() {
 
             {/* LEFT ADS COLUMN */}
             <aside className="hidden xl:flex flex-col gap-6 w-[280px] shrink-0">
-              <div className="overflow-hidden rounded-sm shadow-sm border border-gray-100">
-                <img src={AD_PLACEHOLDER_LEFT_1} alt="Ad 1" className="w-full object-cover h-[500px]" />
-              </div>
-              <div className="overflow-hidden rounded-sm shadow-sm border border-gray-100">
-                <img src={AD_PLACEHOLDER_LEFT_2} alt="Ad 2" className="w-full object-cover h-[450px]" />
-              </div>
+              <AdSlider data={ad2} loading={ad2Loading} height="h-[500px]" />
+              <AdSlider data={ad3} loading={ad3Loading} height="h-[450px]" />
             </aside>
 
             {/* MAIN ARTICLE */}
@@ -173,12 +285,8 @@ export default function PostDetail() {
 
             {/* RIGHT ADS COLUMN */}
             <aside className="hidden lg:flex flex-col gap-6 w-[280px] shrink-0">
-              <div className="overflow-hidden rounded-sm shadow-sm border border-gray-100">
-                <img src={AD_PLACEHOLDER_RIGHT_1} alt="Ad 3" className="w-full object-cover h-[550px]" />
-              </div>
-              <div className="overflow-hidden rounded-sm shadow-sm border border-gray-100">
-                <img src={AD_PLACEHOLDER_RIGHT_2} alt="Ad 4" className="w-full object-cover h-[500px]" />
-              </div>
+              <AdSlider data={ad4} loading={ad4Loading} height="h-[550px]" />
+              <AdSlider data={ad5} loading={ad5Loading} height="h-[500px]" />
             </aside>
           </div>
         </div>
@@ -206,13 +314,7 @@ export default function PostDetail() {
         </div>
 
         {/* SECTION 3: FULL WIDTH AD BANNER */}
-        <div className="w-full mb-12">
-          <img
-            src={ads}
-            alt="Full Width Ad"
-            className="w-full h-auto object-cover "
-          />
-        </div>
+        <AdSlider data={ad6} loading={ad6Loading} className="mb-12 border-none" height="h-auto" />
 
         {/* SECTION 4: LEAVE A COMMENT (Centered, No Sidebars) */}
         <div className="mx-auto max-w-[840px] px-6">

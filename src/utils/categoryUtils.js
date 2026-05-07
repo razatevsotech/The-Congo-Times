@@ -79,15 +79,15 @@ export const getCategoryLabel = (categorySlug) => {
  */
 export const AD_PLACEMENTS = {
   HEADER_TOP: 'position_1',
-  HERO_SIDE: 'position_2',
-  AFTER_HERO: 'position_3',
-  HEALTH_SECTION: 'position_4',
-  TECH_AD: 'position_5',
-  TOP_STORIES: 'position_6',
-  BUSINESS_SECTION: 'position_7',
-  SIDEBAR_TOP: 'position_8',
-  SIDEBAR_MIDDLE: 'position_9',
-  FOOTER: 'position_10',
+  HOME_PAGE_ADS_1: 'position_2',
+  HOME_PAGE_ADS_2: 'position_3',
+  AD_1: 'position_4',
+  AD_2: 'position_5',
+  AD_3: 'position_6',
+  AD_4: 'position_7',
+  AD_5: 'position_8',
+  AD_6: 'position_9',
+  AD_7: 'position_10',
 };
 
 export default {
