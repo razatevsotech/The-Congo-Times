@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { postsAPI } from '../services/apiService';
+import { postsAPI, categoriesAPI } from '../services/apiService';
 
 export const usePosts = (params = {}, dependencies = []) => {
   const [data, setData] = useState(null);
@@ -153,6 +153,35 @@ export const useSearchPosts = (query, perPage = 10) => {
 
     fetchData();
   }, [query, perPage]);
+
+  return { data, loading, error };
+};
+
+/**
+ * Custom hook for fetching all categories
+ */
+export const useCategories = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const result = await categoriesAPI.getAll();
+        setData(result.data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching categories:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return { data, loading, error };
 };

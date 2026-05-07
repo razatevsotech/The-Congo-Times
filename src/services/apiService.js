@@ -122,7 +122,22 @@ export const advertisementsAPI = {
   },
 };
 
+/**
+ * Categories API Endpoints
+ */
+export const categoriesAPI = {
+  /**
+   * Get all news categories
+   * @returns {Promise<Object>} List of categories
+   */
+  getAll: async () => {
+    const response = await fetch(`${API_BASE_URL}/categories`);
+    return handleResponse(response);
+  },
+};
+
 export default {
   postsAPI,
   advertisementsAPI,
+  categoriesAPI,
 };
